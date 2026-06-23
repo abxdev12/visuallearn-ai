@@ -1,0 +1,362 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-300: #a5b4fc;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+  --color-brand-800: #3730a3;
+  --color-brand-900: #312e81;
+
+  --color-accent-50: #fdf2f8;
+  --color-accent-100: #fce7f3;
+  --color-accent-200: #fbcfe8;
+  --color-accent-300: #f9a8d4;
+  --color-accent-400: #f472b6;
+  --color-accent-500: #ec4899;
+  --color-accent-600: #db2777;
+  --color-accent-700: #be185d;
+  --color-accent-800: #9d174d;
+  --color-accent-900: #831843;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-dyslexic: 'Lexend', 'OpenDyslexic', 'Comic Sans MS', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  body {
+    @apply m-0 antialiased;
+    font-family: var(--font-sans);
+    background: #030712;
+    color: #f3f4f6;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-400;
+    outline-style: solid;
+  }
+
+  /* === DYSLEXIA MODE === */
+  html.dyslexia-mode body {
+    font-family: var(--font-dyslexic);
+    letter-spacing: 0.05em;
+    word-spacing: 0.16em;
+    line-height: 1.8;
+  }
+
+  /* === HIGH CONTRAST MODE === */
+  html.high-contrast {
+    --brand: #818cf8;
+    --bg: #000000;
+    --fg: #ffffff;
+    --fg-dim: #d1d5db;
+  }
+
+  html.high-contrast body {
+    background: #000 !important;
+    color: #fff !important;
+  }
+
+  html.high-contrast .glass,
+  html.high-contrast .glass-strong {
+    background: rgba(0, 0, 0, 0.95) !important;
+    border-color: #fff !important;
+    border-width: 2px !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+
+  html.high-contrast button,
+  html.high-contrast .btn {
+    border-width: 2px !important;
+  }
+
+  html.high-contrast button:not([disabled]) {
+    border-color: #fff !important;
+  }
+
+  html.high-contrast input,
+  html.high-contrast select,
+  html.high-contrast textarea {
+    background: #000 !important;
+    color: #fff !important;
+    border-color: #fff !important;
+    border-width: 2px !important;
+  }
+
+  html.high-contrast a {
+    color: #818cf8 !important;
+    text-decoration: underline !important;
+  }
+
+  html.high-contrast [class*="text-gray"],
+  html.high-contrast [class*="text-brand"] {
+    color: #fff !important;
+  }
+
+  html.high-contrast [class*="border"] {
+    border-color: #fff !important;
+  }
+
+  /* === READING FOCUS MODE === */
+  html.reading-focus .left-area {
+    opacity: 0.08;
+    filter: blur(4px);
+    pointer-events: none;
+    transition: all 0.4s ease;
+  }
+
+  html.reading-focus .right-area {
+    opacity: 1;
+    filter: none;
+    pointer-events: auto;
+  }
+
+  html.reading-focus .right-area > * {
+    transition: all 0.3s ease;
+  }
+
+}
+
+@layer utilities {
+  .glass {
+    @apply backdrop-blur-xl bg-gray-900/70 border border-gray-700/30 shadow-lg shadow-black/20;
+  }
+
+  .glass-strong {
+    @apply backdrop-blur-2xl bg-gray-900/85 border border-gray-700/40 shadow-xl shadow-black/25;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.gray.700') transparent;
+  }
+
+  /* Reduced motion respects this class */
+  .animate-in {
+    animation: fadeIn 0.35s ease-out both;
+  }
+
+  .animate-in-fast {
+    animation: fadeIn 0.2s ease-out both;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.35s ease-out both;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.25s ease-out both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  @keyframes shimmerAnimation {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .shimmer {
+    background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+    background-size: 200% 100%;
+    animation: shimmerAnimation 1.5s ease-in-out infinite;
+  }
+
+  .toggle {
+    @apply relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200;
+  }
+
+  .toggle.active {
+    @apply bg-brand-500;
+  }
+
+  .toggle:not(.active) {
+    @apply bg-gray-600;
+  }
+
+  .toggle-handle {
+    @apply inline-block h-4 w-4 rounded-full bg-white shadow-sm transition-transform duration-200;
+  }
+
+  .toggle.active .toggle-handle {
+    @apply translate-x-5;
+  }
+
+  .toggle:not(.active) .toggle-handle {
+    @apply translate-x-1;
+  }
+
+  /* Tooltip system */
+  .tooltip {
+    @apply absolute top-full mt-2 left-1/2 -translate-x-1/2 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap pointer-events-none transition-all duration-150 z-50;
+    background: #0f0f0f;
+    color: #f0f0f0;
+    border: 1px solid #2a2a2a;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+
+  .group:hover .tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Tooltip arrow */
+  .tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -4px;
+    border: 4px solid transparent;
+    border-bottom-color: #2a2a2a;
+  }
+
+  /* Tooltip that appears above (for bottom-anchored elements) */
+  .tooltip-up {
+    @apply absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap pointer-events-none transition-all duration-150 z-50;
+    background: #0f0f0f;
+    color: #f0f0f0;
+    border: 1px solid #2a2a2a;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    opacity: 0;
+    transform: translateX(-50%) translateY(-4px);
+  }
+
+  .group:hover .tooltip-up {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .tooltip-up::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -4px;
+    margin-top: -1px;
+    border: 4px solid transparent;
+    border-top-color: #2a2a2a;
+  }
+
+  /* Accessibility panel slide — uses transition, not animation (avoids restart bug) */
+  .panel-slide {
+    transition: transform 0.25s ease-out, opacity 0.25s ease-out, visibility 0.25s ease-out;
+  }
+
+  /* Success / celebration */
+  @keyframes successPop {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .success-pop {
+    animation: successPop 0.4s ease-out both;
+  }
+
+  @keyframes successCheck {
+    0% { stroke-dashoffset: 50; }
+    100% { stroke-dashoffset: 0; }
+  }
+
+  .check-draw {
+    stroke-dasharray: 50;
+    animation: successCheck 0.4s ease-out 0.15s both;
+  }
+
+  /* Progress ring */
+  @keyframes progressSpin {
+    to { transform: rotate(360deg); }
+  }
+
+  .progress-ring {
+    animation: progressSpin 1s linear infinite;
+  }
+
+  /* Ripple effect */
+  @keyframes ripple {
+    to { transform: scale(3); opacity: 0; }
+  }
+
+  .ripple {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ripple::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(99,102,241,0.3) 0%, transparent 60%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .ripple:active::after {
+    animation: ripple 0.4s ease-out;
+  }
+
+  /* Focus trap / sr */
+
+  /* 3D Card Flip */
+  .perspective-\[1000px\] { perspective: 1000px; }
+  .preserve-3d { transform-style: preserve-3d; }
+  .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+
+  /* Floating icon animation */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-8px) rotate(2deg); }
+    50% { transform: translateY(-4px) rotate(-1deg); }
+    75% { transform: translateY(-10px) rotate(1deg); }
+  }
+
+  /* Neural network pulse */
+  @keyframes neural-pulse {
+    0%, 100% { opacity: 0.06; }
+    50% { opacity: 0.12; }
+  }
+}
