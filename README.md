@@ -99,7 +99,7 @@ Interactive AI learning assistant capable of:
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/VisualLearn-AI.git
+git clone https://github.com/maisamabbas0323/VisualLearn-AI.git
 cd VisualLearn-AI
 ```
 
